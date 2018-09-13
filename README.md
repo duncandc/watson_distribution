@@ -17,8 +17,14 @@ Downlod this directory and place it in your PYTHONPATH.  The primary class can b
 from watson_distribution import DimrothWatson
 ```
 
+## Using This Package
+
+A tuorial can be found in the 'notebooks' directory.
+
 
 ## Dependencies
+
+The following dependencies are required in order to use this package: 
 
 * Numpy
 * Scipy
