@@ -5,9 +5,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import numpy as np
 from astropy.utils.misc import NumpyRNGContext
-from intrinsic_alignments.ia_models.utils import random_perpendicular_directions
-from halotools.utils import normalized_vectors, vectors_between_list_of_vectors, vectors_normal_to_planes,\
-    angles_between_list_of_vectors, rotation_matrices_from_angles, rotate_vector_collection
 from scipy.stats import rv_continuous
 from scipy.special import erf, erfi, erfinv
 from scipy.optimize import minimize
@@ -24,12 +21,12 @@ class DimrothWatson(rv_continuous):
     A Dimroth-Watson distribution of :math:`\cos(\theta)'
     
     Parameters
-    ==========
+    ----------
     k : float
         shape paramater
     
     Notes
-    =====
+    -----
     The Dimroth-Watson distribution is defined as:
 
     .. math::
@@ -101,11 +98,13 @@ class DimrothWatson(rv_continuous):
         probability distribution function
         
         Parameters
-        ==========
+        ----------
         k : float
             shape parameter
         
-        See the notes section for the class for a discussion of large and small `k`.
+        Notes
+        -----
+        See the 'notes' section of the class for a discussion of large :math:`|k|`.
         """
 
         # process arguments
@@ -132,17 +131,25 @@ class DimrothWatson(rv_continuous):
 
         return p
 
-    def _rvs(self, k):
+    def _rvs(self, k, max_iter=100):
         r"""
         random variate sampling
         
         Parameters
-        ==========
+        ----------
         k : array_like
             array of shape parameters
+
+        size : int, optional
+            integer indicating the number of samples to draw.
+            if not given, the number of samples will be equal to len(k).
+
+        max_iter : int, optional
+            integer indicating the maximum number of times to iteratively draw from 
+            the proposal distribution until len(s) points are accepted.
         
         Notes
-        =====
+        -----
         The random variate sampling for this distribution is an implementation
         of the rejection-sampling technique.
         
@@ -186,7 +193,6 @@ class DimrothWatson(rv_continuous):
         mask = np.array([False]*size)  # mask indicating which k values have a sucessful sample
         mask[zero_k] = True
 
-        max_iter = 100
         while (n_sucess < size) & (n_iter < max_iter):
             # get three uniform random numbers
             uran1 = np.random.random(n_remaining)
@@ -290,11 +296,14 @@ class DimrothWatson(rv_continuous):
 def fit_watson_mixture_model(x, ptol=0.01, max_iter=50, verbose=False):
     """
     fit for the alignment strength of a symmetric dimroth-watson k-componenent mixture model
+    
     Parameters
-    ==========
+    ----------
     x : array_like
         A N by k array of cos(theta)
+    
     ptol : float
+    
     max_iter : int
     """
 
@@ -326,14 +335,17 @@ def fit_watson_mixture_model(x, ptol=0.01, max_iter=50, verbose=False):
 def watson_mixture_membership(x, p):
     """
     return the membership ratio for a symmetric dimroth-watson k-componenent mixture model
+    
     Parameters
-    ==========
+    ----------
     x : array_like
         A N by k array of cos(theta)
+    
     p : array_like
         probability
+    
     Returns
-    =======
+    -------
     lnL : numpy.array
         log-liklihood sample `x` was drawn from the distribution
     """
@@ -347,6 +359,7 @@ def watson_mixture_membership(x, p):
 
     # size of sample
     N = np.shape(x)[0]
+    
     # number of distributions
     N_components = np.shape(x)[1]
 
@@ -364,16 +377,20 @@ def watson_mixture_membership(x, p):
 def watson_mixture_liklihood(x, f, k):
     """
     Return negative log-liklihood of a symmetric dimroth-watson k-componenent mixture model
+    
     Parameters
-    ==========
+    ----------
     x : array_like
         A N by k array of cos(theta)
+    
     f: array_like
         membership
+    
     k : float
         shape parameter of the distribution
+    
     Returns
-    =======
+    -------
     lnL : numpy.array
         log-liklihood sample `x` was drawn from the distribution
     """
@@ -390,6 +407,7 @@ def watson_mixture_liklihood(x, f, k):
 
     # size of sample
     N = np.shape(x)[0]
+    
     # number of distributions
     N_components = np.shape(x)[1]
 
@@ -413,12 +431,12 @@ def erfiinv(y, kmax=100):
     for :math:`y` close to zero.
     
     Parameters
-    ==========
+    ----------
     y : array_like
         array of floats
     
     Returns
-    =======
+    -------
     x : numpy.array
         aproximate value of inverse imaginary error function
     """
