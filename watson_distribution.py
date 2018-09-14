@@ -17,39 +17,40 @@ __author__ = ('Duncan Campbell')
 class DimrothWatson(rv_continuous):
     r"""
     A Dimroth-Watson distribution of :math:`\cos(\theta)'
-    
+
     Parameters
     ----------
     k : float
         shape paramater
-    
+
     Notes
     -----
     The Dimroth-Watson distribution is defined as:
 
     .. math::
         p(\cos(\theta)) = B(k)\exp[-k\cos(\theta)^2]\mathrm{d}\cos(\theta)
-    
+
     where
 
     .. math::
         B(k) = \frac{1}{2}int_0^1\exp(-k t^2)\mathrm{d}t
-    
+
     We assume the ISO convention for spherical coordinates, where :math:`\theta`
     is the polar angle, bounded between :math:`[-\pi, \pi]`, and :math:`\phi`
     is the azimuthal angle, where for a Dimroth-Watson distribution, :math:`phi'
     is a uniform random variable between :math:`[0, 2\pi]`: for all `k`.
-    
-    For :math:`k>0`, the distribution of points on a sphere is bipolar.
+
+    For :math:`k<0`, the distribution of points on a sphere is bipolar.
     For :math:`k=0`, the distribution of points on a sphere is uniform.
-    For :math:`k<0`, the distribution of points on a sphere is girdle.
-    
+    For :math:`k>0`, the distribution of points on a sphere is girdle.
+
     Note that as :math:`k \rarrow \infty`:
 
     .. math::
         p(\cos(\theta)) = \frac{1}{2}\left[ \delta(\cos(\theta) + 1) + \delta(\cos(\theta) - 1) \right]\mathrm{d}\cos(\theta)
-    
+
     and as :math:`k \rarrow -\infty`:
+
     .. math::
         p(\cos(\theta)) = \frac{1}{2}\delta(\cos(\theta))\mathrm{d}\cos(\theta)
 
@@ -94,12 +95,12 @@ class DimrothWatson(rv_continuous):
     def _pdf(self, x, k):
         r"""
         probability distribution function
-        
+
         Parameters
         ----------
         k : float
             shape parameter
-        
+
         Notes
         -----
         See the 'notes' section of the class for a discussion of large :math:`|k|`.
@@ -132,7 +133,7 @@ class DimrothWatson(rv_continuous):
     def _rvs(self, k, max_iter=100):
         r"""
         random variate sampling
-        
+
         Parameters
         ----------
         k : array_like
@@ -143,14 +144,14 @@ class DimrothWatson(rv_continuous):
             if not given, the number of samples will be equal to len(k).
 
         max_iter : int, optional
-            integer indicating the maximum number of times to iteratively draw from 
+            integer indicating the maximum number of times to iteratively draw from
             the proposal distribution until len(s) points are accepted.
-        
+
         Notes
         -----
         The random variate sampling for this distribution is an implementation
         of the rejection-sampling technique.
-        
+
         The Proposal distributions are taken from Best & Fisher (1986).
         """
 
