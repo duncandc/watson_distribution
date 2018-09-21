@@ -6,6 +6,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import numpy as np
 from astropy.utils.misc import NumpyRNGContext
 from scipy.stats import rv_continuous
+from scipy.special import erf, erfi
 
 from warnings import warn
 

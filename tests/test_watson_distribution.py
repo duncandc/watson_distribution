@@ -103,11 +103,9 @@ def test_pdf_edge_cases():
 
     k = 10.0**50
     p = d.pdf(x, k=k)
-    print(p)
     assert np.all(p==[1.0/(2*epsilon), 0.0, 1.0/(2*epsilon)])
 
     k = -1.0*10**50
     p = d.pdf(x, k=k)
-    print(p)
 
     assert np.all(p==[0.0, 1.0/(2*epsilon), 0.0])
