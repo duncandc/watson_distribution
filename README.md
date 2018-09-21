@@ -8,6 +8,10 @@ This is a 1-parameter distribution, where the shape parameter, k, can take on va
 
 ![](./notebooks/pdf_plot.png)
 
+## Description
+
+The primary purpose for creating this class is to implement an effecient method to create random variates.  Currently, random variates are generated using the rejection-sampling technique because the inversion of the CDF is non-trivial.  The Proposal distributions are taken from Best & Fisher (1986).  
+
 
 ## Installation
 
@@ -29,4 +33,6 @@ The following dependencies are required in order to use this package:
 * Numpy
 * Scipy
 * Astropy
- 
+
+
+contact: duncanc@andrew.cmu.edu
